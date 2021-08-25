@@ -1,2 +1,2 @@
-# Tornado_templates
+# Tornado templates
 templates for Tornado web framework
