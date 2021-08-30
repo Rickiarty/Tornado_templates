@@ -1,0 +1,25 @@
+<html>
+
+<head>
+  <title>
+    API SAMPLE
+  </title>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <label id="text"></label>
+
+  <script>
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function () {
+      document.getElementById("text").innerHTML = this.responseText;
+    }
+    xhttp.open("GET", "http://127.0.0.1/webapi/TEST", true);
+    xhttp.send();
+
+  </script>
+</body>
+
+</html>

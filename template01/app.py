@@ -5,15 +5,25 @@
     entry of this web application
 """
 
+import os
 import tornado.ioloop
 import tornado.web
 from webapi import basic_web_api
 
 class MainHandler(tornado.web.RequestHandler):
-    web_root = './web'
+    _web_root = os.path.abspath('./web')
 
     def get(self):
-        self.write('Hello, Tornado framework.')
+        #self.write('Hello, Tornado framework.')
+        fpath = os.path.join(self._web_root, self.request.uri[1:])
+        with open(fpath, "r") as html:
+            lines = html.readlines()
+            s = ""
+            for line in lines:
+                s += line
+            print(s)
+            b = bytes(s, 'utf-8')
+            self.write(b)
 
 def make_app():
     static_path_dir = './web/static/'

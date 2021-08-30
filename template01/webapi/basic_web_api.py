@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import tornado.web
+import View.BaseHandler
 
-class BasicWebAPIHandler(tornado.web.RequestHandler):
-    _json_response_content = '{ success: "%s", error_code: "%s", msg: %s }'
+class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
+    _json_response_content = '{ "success": "%s", "error_code": "%s", "msg": "%s" }'
     _msg = ''
 
     def get(self):
