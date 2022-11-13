@@ -16,6 +16,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
     def options(self):
         # For CORS(cross origin resource sharing), we have to implement HTTP method 'OPTIONS' to handle pre-flight request of browsers. 
-        #self.set_status(204) # We set HTTP status code to 204. HTTP status code 204 'No Content success' means a request has succeeded, but that the client doesn't need to navigate away from its current page. This is for pre-flight request of browsers, which is a browsers' behavior to enhance safety during CORS. 
-        self.set_status(200)
+        self.set_default_headers()
+        self.set_status(204) # We set HTTP status code to 204. HTTP status code 204 'No Content success' means a request has succeeded, but that the client doesn't need to navigate away from its current page. This is for pre-flight request of browsers, which is a browsers' behavior to enhance safety during CORS. 
+        #self.set_status(200)
         self.write("HTTP status code 204 'No Content success'<br>")

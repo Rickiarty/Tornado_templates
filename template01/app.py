@@ -4,10 +4,10 @@
 
 import tornado.ioloop
 import tornado.web
-from webapi import basic_web_api
+from View.webapi import basic_web_api
 
 def make_app():
-    static_path_dir = './web/'
+    static_path_dir = './websrc/'
     return tornado.web.Application([
         (r'^/webapi/.+$', basic_web_api.BasicWebAPIHandler),
         (r'^/(.*)$', tornado.web.StaticFileHandler, {'path': static_path_dir}),

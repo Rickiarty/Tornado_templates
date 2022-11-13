@@ -1,19 +1,9 @@
 import json
 from urllib.parse import parse_qs
 import View.BaseHandler
-from webapi.auth import Authentication
+from module.auth import Authentication
 
 class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
-    _request_data = {
-        "token": "01234567879012346578901234567879013245678901234567879", 
-        "id": "Bubu", 
-        "sex": 1
-    }
-    _response_data = {
-        "token": "01234567879012346578901234567879013245678901234567879", 
-        "id": "Bubu", 
-        "sex": 1
-    }
     
     #webapi_mapping = dict() # Substitute 'dict()' for '{}' to initialize a dictionary/mapping for preventing from mixing dictionaries up with sets. 
     webapi_mapping = {
@@ -22,9 +12,20 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
     
     def get(self):
         self.set_default_headers()
-        self.write(json.dumps(self._response_data)) # DEBUG
+        http_response_str = ""
+        http_response_str += 'HTTP method/verb:\n' + str(self.request.method)
+        http_response_str += "\n\nHTTP request's header:\n" + str(self.request.headers)
+        http_response_str += '\n\nremote IP:\n' + str(self.request.remote_ip)
+        http_response_str += "\n\nHTTP request's body:\n" + str(self.request.body)
+        http_response_str += "\n\narguments of HTTP request's body:\n" + str(self.request.body_arguments)
+        self.write(http_response_str)
 
     def post(self):
+        http_response_data = {
+            "token": "01234567879012346578901234567879013245678901234567879", 
+            "id": "Bubu", 
+            "sex": 1
+        }
         self.set_default_headers()
         print(self.request.method) # DEBUG
         print(self.request.headers) # DEBUG
@@ -44,8 +45,8 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         webapi_name = temp[-1]
         is_valid, token = self.webapi_mapping[webapi_name](id, passwd)
         if not is_valid:
-            self.write(json.dumps(self._response_data))
+            self.write(json.dumps(http_response_data))
             return        
-        self._response_data["token"] = token
-        self._response_data["id"] = id
-        self.write(json.dumps(self._response_data))
+        http_response_data["token"] = token
+        http_response_data["id"] = id
+        self.write(json.dumps(http_response_data))
