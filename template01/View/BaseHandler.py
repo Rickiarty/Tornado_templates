@@ -14,6 +14,7 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_header('Access-Control-Max-Age', 1000)
         self.set_header('Content-type', 'application/json; charset=UTF-8')
 
+    # HTTP method 'OPTIONS'
     def options(self):
         # For CORS(cross origin resource sharing), we have to implement HTTP method 'OPTIONS' to handle pre-flight request of browsers. 
         self.set_default_headers()

@@ -10,6 +10,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         "login": Authentication.Login,
     }
     
+    # HTTP method 'GET'
     def get(self):
         self.set_default_headers()
         http_response_str = ""
@@ -20,6 +21,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         http_response_str += "\n\narguments of HTTP request's body:\n" + str(self.request.body_arguments)
         self.write(http_response_str)
 
+    # HTTP method 'POST'
     def post(self):
         http_response_data = {
             "token": "01234567879012346578901234567879013245678901234567879", 
@@ -50,3 +52,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         http_response_data["token"] = token
         http_response_data["id"] = id
         self.write(json.dumps(http_response_data))
+
+    # HTTP method 'OPTIONS'
+    def options(super):
+        super.options()
