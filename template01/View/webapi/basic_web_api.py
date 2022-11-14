@@ -32,7 +32,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         print(str(self.request.body_arguments)) # DEBUG
         #web_args = { key: value for key, value in self.request.arguments.items() } # 'dictionary comprehension' in Python 
         args_t = parse_qs(self.request.body)
-        web_args = {'id': args_t[b'id'], 'password': args_t[b'password']}
+        web_args = {'id': str(args_t[b'id'])[3:-2], 'password': str(args_t[b'password'])[3:-2]}
         url_segs = self.request.full_url().split('/')
         if url_segs[-2] != "webapi":
             self.set_status(404)
@@ -47,6 +47,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
             return        
         http_response_data["token"] = token
         http_response_data["id"] = id
+        print(json.dumps(http_response_data))#
         self.write(json.dumps(http_response_data))
 
     # HTTP method 'OPTIONS'

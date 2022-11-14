@@ -9,7 +9,7 @@ class MonoLogin:
     def Login(cls, token: str, id: str) -> bool:
         try:
             timestamp = datetime.now()
-            cls.__login_status[token] = tuple(id, timestamp)
+            cls.__login_status[token] = (id, timestamp)
             return True
         except Exception as ex:
             print(str(ex)) # DEBUG 
