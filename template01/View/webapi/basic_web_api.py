@@ -47,7 +47,6 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
             return        
         http_response_data["token"] = token
         http_response_data["id"] = id
-        print(json.dumps(http_response_data))#
         self.write(json.dumps(http_response_data))
 
     # HTTP method 'OPTIONS'

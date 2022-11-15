@@ -9,9 +9,9 @@ function doAjaxPost() {
         contentType: "multipart/form-data", 
         dataType: "json", 
         data: formData, 
-        //beforeSend: function(request) {
-        //	request.setRequestHeader("Access-Control-Allow-Origin", "*");
-        //},
+        beforeSend: function(request) {
+        	request.setRequestHeader("Access-Control-Allow-Origin", "*");
+        },
         success: function (url, formData) {
             var responseData = $.post(url, {'id': formData["id"], 'password': formData["password"]});
             //console.log(responseData); // DEBUG 
