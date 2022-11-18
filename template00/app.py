@@ -1,17 +1,13 @@
 """
-    entry of this web application
+    entry point of this web application
 """
 
 import tornado.ioloop
 import tornado.web
-from View.webapi import basic_web_api
-from View.web import basic_web
 
 def make_app():
     static_path_dir = './websrc/'
     return tornado.web.Application([
-        (r'^/webapi/.+$', basic_web_api.BasicWebAPIHandler),
-        (r'^/.+\.htm$', basic_web.BasicWebHandler),
         (r'^/(.*)$', tornado.web.StaticFileHandler, {'path': static_path_dir}),
     ])
 
