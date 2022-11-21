@@ -25,14 +25,15 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
     def post(self):
         http_response_data = dict() # Substitute 'dict()' for '{}' to initialize a dictionary/mapping for preventing from mixing dictionaries up with sets. 
         self.set_default_headers()
-        print(self.request.method) # DEBUG
-        print(self.request.headers) # DEBUG
-        print(self.request.remote_ip) # DEBUG
-        print(str(self.request.body)) # DEBUG
-        print(str(self.request.body_arguments)) # DEBUG
+        #print(self.request.method) # DEBUG
+        #print(self.request.headers) # DEBUG
+        #print(self.request.remote_ip) # DEBUG
+        #print(str(self.request.body)) # DEBUG
+        #print(str(self.request.body_arguments)) # DEBUG
         #web_args = { key: value for key, value in self.request.arguments.items() } # 'dictionary comprehension' in Python 
         args_t = parse_qs(self.request.body)
-        web_args = {'id': str(args_t[b'id'])[3:-2], 'password': str(args_t[b'password'])[3:-2]}
+        print(args_t) # DEBUG
+        web_args = {'id': str(args_t[b'id'][0])[3:-2], 'password': str(args_t[b'password'][0])[3:-2]}
         url_segs = self.request.full_url().split('/')
         if url_segs[-2] != "webapi":
             self.set_status(404)
@@ -40,14 +41,15 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
             return
         webapi_name = url_segs[-1]
         #print("\n\nwebapi_name:\n ", webapi_name, "\ntype of a specific mapped inner function/method:\n ", type(self._webapi_mapping[webapi_name]), "\nname of a specific mapped inner function/method:\n ", str(self._webapi_mapping[webapi_name]), '\n') # DEBUG 
-        is_valid, token, id = self._webapi_mapping[webapi_name](**web_args) # try to login 
-        if not is_valid:
+        succeeded, token, id = self._webapi_mapping[webapi_name](**web_args) # try to login 
+        if not succeeded:
             http_response_data['msg'] = "login failed"
             self.write(json.dumps(http_response_data))
             return        
-        http_response_data["token"] = token
-        http_response_data["id"] = id
-        self.write(json.dumps(http_response_data))
+        else: # succeeded 
+            http_response_data["token"] = token
+            http_response_data["id"] = id
+            self.write(json.dumps(http_response_data))
 
     # HTTP method 'OPTIONS'
     def options(super):

@@ -8,6 +8,7 @@ function doAjaxPost() {
         url: "/webapi/login",
         contentType: "multipart/form-data", 
         dataType: "json", 
+        crossDomain: true, 
         data: formData, 
         beforeSend: function(request) {
         	request.setRequestHeader("Access-Control-Allow-Origin", "*");

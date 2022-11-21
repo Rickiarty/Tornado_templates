@@ -1,5 +1,5 @@
 """
-    entry of this web application
+    entry point of this web application
 """
 
 import tornado.ioloop
