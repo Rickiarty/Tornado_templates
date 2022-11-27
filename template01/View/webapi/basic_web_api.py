@@ -1,7 +1,7 @@
 import json
-from urllib.parse import parse_qs
 import View.BaseHandler
 from module.auth import Authentication
+#from urllib.parse import parse_qs
 
 class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
     
@@ -46,7 +46,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         webapi_name = url_segs[-1]
         #print("\n\nwebapi_name:\n ", webapi_name, "\ntype of a specific mapped inner function/method:\n ", type(self._webapi_mapping[webapi_name]), "\nname of a specific mapped inner function/method:\n ", str(self._webapi_mapping[webapi_name]), '\n') # DEBUG 
         succeeded, token, id = self._webapi_mapping[webapi_name](id=web_args['id'], password=web_args['password']) # try to login 
-        print(succeeded, token, id) # DEBUG
+        #print(succeeded, token, id) # DEBUG
         if not succeeded:
             http_response_data['msg'] = "login failed"
             self.write(json.dumps(http_response_data))

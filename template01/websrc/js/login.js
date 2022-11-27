@@ -15,7 +15,7 @@ function doAjaxPost() {
         },
         success: function (url, formData) {
             var responseData = $.post(url, {"id": formData["id"], "password": formData["password"]});
-            console.log(responseData); // DEBUG 
+            //console.log(responseData); // DEBUG 
             document.getElementsByName("textarea1").value = responseData;
         },
         error: function (thrownError) {
