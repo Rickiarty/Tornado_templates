@@ -1,4 +1,5 @@
 from datetime import datetime
+from random import randint
 from module.logger import Logger
 
 # a static class(靜態類別) for universal unique log-in management 
@@ -18,20 +19,21 @@ class MonoLogin:
         "u", "v", "w", "x", "y", "z", 
         "#", "=", "&", "^", 
     ] # a list from which this program unit can choose randomly 
-    _token_length = len(_character_list)
+    _token_length = 128
     
-    @classmethod #(靜態方法/函式) 
+    @classmethod #(類別方法/函式) 
     def Login(cls, id: str) -> tuple[bool, str]: # public method/function 
         try:
             token = "" # generate a temporary series randomly 
-            token.join( cls._character_list[i] for i in range(cls._token_length) ) # one of Pythonic way to generate a string with a random series of characters 
+            token = token.join( cls._character_list[randint(0, len(cls._character_list)-1)] for i in range(cls._token_length) ) # one of Pythonic ways to generate a string with a random series of characters 
+            print('token=', token) # DEBUG
             if not token in cls.__login_status:
                 timestamp = datetime.now()
                 cls.__login_status[token] = (id, timestamp)
-                return True, token
+                return True, token # 登入成功, 暫時通行證證號 
             else:
                 return cls.Login(id=id)
         except Exception as ex:
             print(str(ex)) # DEBUG 
             #Logger.log(Logger.category_tuple[0], str(ex)) # RELEASE or DEBUG 
-            return False, ""
+            return False, "" # 登入失敗, (無暫時通行證，故無證號) 

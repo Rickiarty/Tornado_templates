@@ -31,9 +31,13 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         #print(str(self.request.body)) # DEBUG
         #print(str(self.request.body_arguments)) # DEBUG
         #web_args = { key: value for key, value in self.request.arguments.items() } # 'dictionary comprehension' in Python 
-        args_t = parse_qs(self.request.body)
-        print(args_t) # DEBUG
-        web_args = {'id': str(args_t[b'id'][0])[3:-2], 'password': str(args_t[b'password'][0])[3:-2]}
+        #args_t = parse_qs(self.request.body_arguments)
+        #print(args_t) # DEBUG
+        web_args = {
+            'id': str(self.request.body_arguments['id'][0])[2:-1], 
+            'password': str(self.request.body_arguments['password'][0])[2:-1]
+        }
+        #print(web_args) # DEBUG
         url_segs = self.request.full_url().split('/')
         if url_segs[-2] != "webapi":
             self.set_status(404)
@@ -41,7 +45,8 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
             return
         webapi_name = url_segs[-1]
         #print("\n\nwebapi_name:\n ", webapi_name, "\ntype of a specific mapped inner function/method:\n ", type(self._webapi_mapping[webapi_name]), "\nname of a specific mapped inner function/method:\n ", str(self._webapi_mapping[webapi_name]), '\n') # DEBUG 
-        succeeded, token, id = self._webapi_mapping[webapi_name](**web_args) # try to login 
+        succeeded, token, id = self._webapi_mapping[webapi_name](id=web_args['id'], password=web_args['password']) # try to login 
+        print(succeeded, token, id) # DEBUG
         if not succeeded:
             http_response_data['msg'] = "login failed"
             self.write(json.dumps(http_response_data))
