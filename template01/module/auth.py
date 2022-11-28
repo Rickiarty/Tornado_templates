@@ -7,6 +7,10 @@ class Authentication:
         return True # It's NOT implemented yet! DIY. 
     
     @classmethod
+    def DoesLogin(cls, token: str, id: str) -> bool:
+        return MonoLogin.DoesLogin(token=token, id=id)
+    
+    @classmethod
     def Login(cls, id: str, password: str) -> tuple[bool, str, str]:
         is_valid = cls.IsAccountValid(id=id, password=password)
         if is_valid:

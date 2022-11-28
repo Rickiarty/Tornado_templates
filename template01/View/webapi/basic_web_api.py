@@ -7,7 +7,12 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
     
     #_webapi_mapping = dict() # Substitute 'dict()' for '{}' to initialize a dictionary/mapping for preventing from mixing dictionaries up with sets. 
     _webapi_mapping = {
-        "login": Authentication.Login,
+        "isaccountvalid": Authentication.IsAccountValid, 
+        "doeslogin": Authentication.DoesLogin, 
+        "login": Authentication.Login, 
+        "logout": Authentication.Logout, 
+        "logoutall": Authentication.LogoutAll, 
+        "refreshtoken": Authentication.RefreshToken, 
     }
     
     # HTTP method 'GET'
@@ -45,16 +50,34 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
             return
         webapi_name = url_segs[-1]
         #print("\n\nwebapi_name:\n ", webapi_name, "\ntype of a specific mapped inner function/method:\n ", type(self._webapi_mapping[webapi_name]), "\nname of a specific mapped inner function/method:\n ", str(self._webapi_mapping[webapi_name]), '\n') # DEBUG 
-        succeeded, token, id = self._webapi_mapping[webapi_name](id=web_args['id'], password=web_args['password']) # try to login 
-        #print(succeeded, token, id) # DEBUG
-        if not succeeded:
-            http_response_data['msg'] = "login failed"
-            self.write(json.dumps(http_response_data))
-            return        
-        else: # succeeded 
-            http_response_data["token"] = token
-            http_response_data["id"] = id
-            self.write(json.dumps(http_response_data))
+        if webapi_name == 'login':
+            succeeded, token, id = self._webapi_mapping[webapi_name](id=web_args['id'], password=web_args['password']) # try to login 
+            if not succeeded:
+                http_response_data['msg'] = "login failed"
+                self.write(json.dumps(http_response_data))
+                return        
+            else: # succeeded 
+                http_response_data["token"] = token
+                http_response_data["id"] = id
+                self.write(json.dumps(http_response_data))
+        elif webapi_name == 'logout':
+            # It's NOT implemented yet.
+            return
+        elif webapi_name == 'logoutall':
+            # It's NOT implemented yet.
+            return
+        elif webapi_name == 'refreshtoken':
+            # It's NOT implemented yet.
+            return
+        elif webapi_name == 'doeslogin':
+            # It's NOT implemented yet.
+            return
+        elif webapi_name == 'isaccountvalid':
+            # It's NOT implemented yet.
+            return
+        else:
+            # Do nothing. 
+            return
 
     # HTTP method 'OPTIONS'
     def options(super):

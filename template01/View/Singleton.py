@@ -30,6 +30,24 @@ class MonoLogin:
             token = token.join( cls._character_list[randint(0, len(cls._character_list)-1)] for i in range(cls._token_length) ) # one of Pythonic ways to generate a string with a random series of characters 
         return token
 
+    @classmethod
+    def DoesLogin(cls, token: str, id: str) -> bool:
+        #print("Is 'dict' in Python iterable? ", hasattr(dict(), '__iter__'), ".")
+        #print("Is 'list' in Python iterable? ", hasattr(list(), '__iter__'), ".")
+        #print("Is 'tuple' in Python iterable? ", hasattr(tuple(), '__iter__'), ".")
+        #print("Is 'set' in Python iterable? ", hasattr(set(), '__iter__'), ".")
+        #print("Is 'str' in Python iterable? ", hasattr(str(), '__iter__'), ".")
+        #print("Is 'int' in Python iterable? ", hasattr(int(), '__iter__'), ".")
+        is_available = (token in cls.__login_status) and (cls.__login_status[token] != None) # T/F 
+        element_does_match_format = (hasattr(cls.__login_status[token]), '__iter__') and (len(cls.__login_status[token]) >= 2) # T/F 
+        if is_available and element_does_match_format:
+            return (cls.__login_status[token][0] == id) # Is the id/identity identical?(T/F) And, by the way, it behaves identical even without the parentheses which are just for helping those who are not familiar with Python programming. 
+        else:
+            # (not [is available]) or (not [element does match format]) = not ([is available] and [element does match format])
+            # a.k.a. De Morgan's laws(迪摩根定律) or De Morgan's theorem(迪摩根定理): https://en.wikipedia.org/wiki/De_Morgan%27s_laws 
+            # The web URL above is just for helping those who are not familiar with logic, which is accurately a territory/field/domain of mathematics. 
+            return False
+    
     @classmethod #(類別方法/函式) 
     def Login(cls, id: str) -> tuple[bool, str]: # public method/function 
         try:
@@ -52,7 +70,7 @@ class MonoLogin:
             return False
     @classmethod
     def LogoutAll(cls, id: str) -> bool:
-        tokens_to_be_deleted = [key for key in cls.__login_status if cls.__login_status[key][0] == id] # 'dictionary comprehension' in Python 
+        tokens_to_be_deleted = [key for key in cls.__login_status if cls.__login_status[key][0] == id] # 'list comprehension' with dictionary/mapping in Python 
         for token in tokens_to_be_deleted:
             cls.__login_status.pop(token, None)
         return True
