@@ -32,21 +32,18 @@ class MonoLogin:
 
     @classmethod
     def DoesLogin(cls, token: str, id: str) -> bool:
-        #print("Is 'dict' in Python iterable? ", hasattr(dict(), '__iter__'), ".")
-        #print("Is 'list' in Python iterable? ", hasattr(list(), '__iter__'), ".")
-        #print("Is 'tuple' in Python iterable? ", hasattr(tuple(), '__iter__'), ".")
-        #print("Is 'set' in Python iterable? ", hasattr(set(), '__iter__'), ".")
-        #print("Is 'str' in Python iterable? ", hasattr(str(), '__iter__'), ".")
-        #print("Is 'int' in Python iterable? ", hasattr(int(), '__iter__'), ".")
+        # (not [is available]) or (not [element does match format]) = not ([is available] and [element does match format])
+        # a.k.a. De Morgan's laws(迪摩根定律) or De Morgan's theorem(迪摩根定理): https://en.wikipedia.org/wiki/De_Morgan%27s_laws 
+        # The web URL above is just for helping those who are not familiar with logic, which is accurately a territory/field/domain of mathematics. 
         is_available = (token in cls.__login_status) and (cls.__login_status[token] != None) # T/F 
-        element_does_match_format = (hasattr(cls.__login_status[token]), '__iter__') and (len(cls.__login_status[token]) >= 2) # T/F 
-        if is_available and element_does_match_format:
-            return (cls.__login_status[token][0] == id) # Is the id/identity identical?(T/F) And, by the way, it behaves identical even without the parentheses which are just for helping those who are not familiar with Python programming. 
-        else:
-            # (not [is available]) or (not [element does match format]) = not ([is available] and [element does match format])
-            # a.k.a. De Morgan's laws(迪摩根定律) or De Morgan's theorem(迪摩根定理): https://en.wikipedia.org/wiki/De_Morgan%27s_laws 
-            # The web URL above is just for helping those who are not familiar with logic, which is accurately a territory/field/domain of mathematics. 
+        if not is_available: # is not available 
             return False
+        else: # is available 
+            element_does_match_format = hasattr(cls.__login_status[token], '__iter__') and (len(cls.__login_status[token]) >= 2) # T/F 
+            if element_does_match_format:
+                return (cls.__login_status[token][0] == id) # Is the id/identity identical?(T/F) And, by the way, it behaves identical even without the parentheses which are just for helping those who are not familiar with Python programming. 
+            else: # element's format does not match 
+                return False
     
     @classmethod #(類別方法/函式) 
     def Login(cls, id: str) -> tuple[bool, str]: # public method/function 

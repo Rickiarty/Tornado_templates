@@ -36,8 +36,6 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         #print(str(self.request.body)) # DEBUG
         #print(str(self.request.body_arguments)) # DEBUG
         #req_args = { key: value for key, value in self.request.arguments.items() } # 'dictionary comprehension' in Python 
-        #args_t = parse_qs(self.request.body_arguments)
-        #print(args_t) # DEBUG
         req_args = json.loads(str(self.request.body)[2:-1])
         #print(json.dumps(req_args)) # DEBUG 
         #print('id=', json.dumps(req_args['id'])) # DEBUG 
@@ -58,7 +56,11 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
             else: # succeeded 
                 http_response_data["token"] = token
                 http_response_data["id"] = id
+                #print('log-in =', str(Authentication.DoesLogin(token=token, id=id))) # DEBUG 
+                #print('id =', id) # DEBUG 
+                #print('token =', token) # DEBUG 
                 self.write(json.dumps(http_response_data))
+                return
         elif webapi_name == 'logout':
             # It's NOT implemented yet.
             return
@@ -69,7 +71,9 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
             # It's NOT implemented yet.
             return
         elif webapi_name == 'doeslogin':
-            # It's NOT implemented yet.
+            does_login = Authentication.DoesLogin(token=req_args['token'], id=req_args['id'])
+            http_response_data['doesLogin'] = str(does_login)
+            self.write(json.dumps(http_response_data))
             return
         elif webapi_name == 'isaccountvalid':
             # It's NOT implemented yet.
