@@ -16,9 +16,11 @@ function loginAjaxPost() {
         success: function (url, formData) {
             var responseData = $.post(url, {"id": formData["id"], "password": formData["password"]});
             const expDate = new Date();
-            expDate.setTime(expDate.getTime() + (15*60*1000));
-            document.cookie = "token=" + responseData["token"] + ";id=" + responseData["id"] + ";expires=" + expDate.toUTCString() + ";path=/;";
-            document.getElementById("textarea1").innerHTML = JSON.stringify(responseData);
+            expDate.setTime(expDate.getTime() + (15*60*1000)); // now + 15 minutes in milli-second 
+            var cookie = "record=|" + JSON.stringify(responseData) + "|;expires=" + expDate.toUTCString() + ";path=/;";
+            alert(cookie); // DEBUG 
+            document.cookie = cookie;
+            document.getElementById("textarea1").innerHTML = cookie;
         },
         error: function (thrownError) {
             console.log(thrownError);
@@ -27,11 +29,8 @@ function loginAjaxPost() {
 }
 
 function checkLoginStatusAjaxPost() {
-    let attr = document.cookie.split(';');
-    var formData = {
-        token: attr[0].substring(6),
-        id: attr[0].substring(3),
-    };
+    let record = document.cookie.split('|');
+    var formData = JSON.parse(record[1]);
     $.ajax({
         type: "POST", 
         url: "/webapi/doeslogin",
@@ -44,6 +43,7 @@ function checkLoginStatusAjaxPost() {
         },
         success: function (url, formData) {
             var responseData = $.post(url, {"token": formData["token"], "id": formData["id"]});
+            document.getElementById("textarea1").innerHTML = JSON.stringify(formData);
             alert(JSON.stringify(responseData));
         },
         error: function (thrownError) {

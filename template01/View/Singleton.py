@@ -36,13 +36,18 @@ class MonoLogin:
         # a.k.a. De Morgan's laws(迪摩根定律) or De Morgan's theorem(迪摩根定理): https://en.wikipedia.org/wiki/De_Morgan%27s_laws 
         # The web URL above is just for helping those who are not familiar with logic, which is accurately a territory/field/domain of mathematics. 
         is_available = (token in cls.__login_status) and (cls.__login_status[token] != None) # T/F 
+        #print(cls.__login_status) # DEBUG 
+        #print('id =', id) # DEBUG 
+        #print('token =', token) # DEBUG 
         if not is_available: # is not available 
+            #print('is_available =', is_available) # DEBUG 
             return False
         else: # is available 
             element_does_match_format = hasattr(cls.__login_status[token], '__iter__') and (len(cls.__login_status[token]) >= 2) # T/F 
             if element_does_match_format:
                 return (cls.__login_status[token][0] == id) # Is the id/identity identical?(T/F) And, by the way, it behaves identical even without the parentheses which are just for helping those who are not familiar with Python programming. 
             else: # element's format does not match 
+                #print('element_does_match_format =', element_does_match_format) # DEBUG 
                 return False
     
     @classmethod #(類別方法/函式) 

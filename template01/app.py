@@ -12,6 +12,7 @@ def make_app():
     return tornado.web.Application([
         (r'^/webapi/.+$', basic_web_api.BasicWebAPIHandler),
         (r'^/.+\.htm$', basic_web.BasicWebHandler),
+        #(r'.*', basic_web.BasicWebHandler), 
         (r'^/(.*)$', tornado.web.StaticFileHandler, {'path': static_path_dir}),
     ])
 
