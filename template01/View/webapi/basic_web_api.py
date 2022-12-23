@@ -42,8 +42,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         #print('password=', json.dumps(req_args['password'])) # DEBUG 
         url_segs = self.request.full_url().split('/')
         if url_segs[-2] != "webapi":
-            self.set_status(404)
-            self.finish("Woops! page not found!")
+            self._pageNotFound()
             return
         webapi_name = url_segs[-1]
         #print("\n\nwebapi_name:\n ", webapi_name, "\ntype of a specific mapped inner function/method:\n ", type(self._webapi_mapping[webapi_name]), "\nname of a specific mapped inner function/method:\n ", str(self._webapi_mapping[webapi_name]), '\n') # DEBUG 
@@ -71,7 +70,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
             # It's NOT implemented yet.
             return
         elif webapi_name == 'doeslogin':
-            does_login = Authentication.DoesLogin(token=req_args['token'], id=req_args['id'])
+            does_login = self._webapi_mapping[webapi_name](token=req_args['token'], id=req_args['id'])
             http_response_data['doesLogin'] = str(does_login)
             self.write(json.dumps(http_response_data))
             return
@@ -81,7 +80,3 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         else:
             # Do nothing. 
             return
-
-    # HTTP method 'OPTIONS'
-    def options(super):
-        super.options()

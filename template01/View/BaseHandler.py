@@ -24,3 +24,7 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_default_headers()
         self.set_status(204) # We set HTTP status code to 204. HTTP status code 204 'No Content success' means a request has succeeded, but that the client doesn't need to navigate away from its current page. This is for pre-flight request of browsers, which is a browsers' behavior to enhance safety during CORS. 
         self.finish()
+
+    def _pageNotFound(self):
+        self.set_status(404)
+        self.finish("Woops! page not found!")

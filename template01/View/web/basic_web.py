@@ -36,7 +36,3 @@ class BasicWebHandler(View.BaseHandler.BaseHandler):
         http_response_str += "\n\nHTTP request's body:\n" + str(self.request.body)
         http_response_str += "\n\narguments of HTTP request's body:\n" + str(self.request.body_arguments)
         self.write(http_response_str) # write a string to network stream - executed only once 
-
-    # HTTP method 'OPTIONS'
-    def options(super):
-        super.options()
