@@ -33,7 +33,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         #print(self.request.method) # DEBUG
         #print(self.request.headers) # DEBUG
         #print(self.request.remote_ip) # DEBUG
-        #print(str(self.request.body)) # DEBUG
+        print(str(self.request.body)) # DEBUG
         #print(str(self.request.body_arguments)) # DEBUG
         #req_args = { key: value for key, value in self.request.arguments.items() } # 'dictionary comprehension' in Python 
         req_args = json.loads(str(self.request.body)[2:-1])
@@ -60,23 +60,23 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
                 #print('token =', token) # DEBUG 
                 self.write(json.dumps(http_response_data))
                 return
-        elif webapi_name == 'logout':
-            # It's NOT implemented yet.
-            return
-        elif webapi_name == 'logoutall':
-            # It's NOT implemented yet.
+        elif webapi_name == 'logout' or webapi_name == 'logoutall' or webapi_name == 'doeslogin':
+            result = self._webapi_mapping[webapi_name](token=req_args['token'], id=req_args['id'])
+            http_response_data['result'] = str(result)
+            self.write(json.dumps(http_response_data))
             return
         elif webapi_name == 'refreshtoken':
-            # It's NOT implemented yet.
-            return
-        elif webapi_name == 'doeslogin':
-            does_login = self._webapi_mapping[webapi_name](token=req_args['token'], id=req_args['id'])
-            http_response_data['doesLogin'] = str(does_login)
+            token, id = self._webapi_mapping[webapi_name](token=req_args['token'], id=req_args['id'])
+            http_response_data["token"] = token
+            http_response_data["id"] = id
             self.write(json.dumps(http_response_data))
             return
         elif webapi_name == 'isaccountvalid':
-            # It's NOT implemented yet.
+            is_valid = self._webapi_mapping[webapi_name](id=req_args['id'], password=req_args['password'])
+            http_response_data['isValid'] = str(is_valid)
+            self.write(json.dumps(http_response_data))
             return
         else:
-            # Do nothing. 
+            self.set_status(200)
+            self.finish('Despite no meaningful content, via web-browser, this webpage sent request to server, and then received response from it successfully.')
             return

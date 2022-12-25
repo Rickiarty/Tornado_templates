@@ -1,9 +1,8 @@
-function loginAjaxPost(webhost = 'http://localhost') {
-    var weburl = webhost + "/webapi/login";
-    var webpageData = {
-        id: $("#textbox1").val(),
-        password: $("#textbox2").val(),
-    };
+
+function checkLoginStatusAjaxPost(webhost = 'http://localhost') {
+    let record = document.cookie.split('|');
+    var weburl = webhost + "/webapi/doeslogin";
+    var webpageData = JSON.parse(record[1]);
     $.ajax({
         type: "POST", 
         url: weburl,
@@ -16,16 +15,12 @@ function loginAjaxPost(webhost = 'http://localhost') {
         },
         success: function (responseData) {
             console.log('web-URL:\n' + weburl + "\n"); // DEBUG 
-            var readyState = $.post(weburl, {"id": webpageData["id"], "password": webpageData["password"]});
+            var readyState = $.post(weburl, {"token": webpageData["token"], "id": webpageData["id"]});
             var jsonStr = JSON.stringify(responseData);
             console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
-            const expDate = new Date();
-            expDate.setTime(expDate.getTime() + (15*60*1000)); // now + 15 minutes in milli-second 
-            var cookie = "record=|" + jsonStr + "|;expires=" + expDate.toUTCString() + ";path=/;";
-            //alert(cookie); // DEBUG 
-            document.cookie = cookie;
             document.getElementById("textarea1").innerHTML  = 'content of response from server:\n' + jsonStr + '\n';
-            document.getElementById("textarea1").innerHTML += '\ncookie in local data storage:\n' + cookie + '\n';
+            document.getElementById("textarea1").innerHTML += '\ncookie in local data storage:\n' + document.cookie + '\n';
+            alert(jsonStr);
         },
         error: function (thrownError) {
             console.log(thrownError);

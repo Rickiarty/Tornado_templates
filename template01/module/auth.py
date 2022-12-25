@@ -5,6 +5,7 @@ class Authentication:
     @classmethod
     def IsAccountValid(cls, id: str, password: str) -> bool:
         return True # It's NOT implemented yet! DIY. 
+        #return False # It's NOT implemented yet! DIY. 
     
     @classmethod
     def DoesLogin(cls, token: str, id: str) -> bool:
