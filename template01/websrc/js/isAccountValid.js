@@ -1,5 +1,6 @@
-function loginAjaxPost(webhost = 'http://localhost') {
-    var weburl = webhost + "/webapi/login";
+
+function checkAccountValidityAjaxPost(webhost = 'http://localhost') {
+    var weburl = webhost + "/webapi/isaccountvalid";
     var webpageData = {
         id: $("#textbox1").val(),
         password: $("#textbox2").val(),
@@ -18,17 +19,11 @@ function loginAjaxPost(webhost = 'http://localhost') {
         	request.setRequestHeader("Access-Control-Allow-Origin", "*");
         },
         success: function (responseData) {
-            console.log('web-URL:\n' + weburl + "\n"); // DEBUG 
             var readyState = $.post(weburl, {"id": webpageData["id"], "password": webpageData["password"]});
             var jsonStr = JSON.stringify(responseData);
             console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
-            const expDate = new Date();
-            expDate.setTime(expDate.getTime() + 15*(60*1000)); // now + 15 minutes in milli-second 
-            var cookies = "record=|" + jsonStr + "|;expires=" + expDate.toUTCString() + ";path=/;";
-            //alert(cookies); // DEBUG 
-            document.cookies = cookies;
             document.getElementById("textarea1").innerHTML  = 'content of response from server:\n' + jsonStr + '\n';
-            document.getElementById("textarea1").innerHTML += '\ncookies in local data storage:\n' + document.cookies + '\n';
+            alert(jsonStr);
         },
         error: function (thrownError) {
             console.log(thrownError);

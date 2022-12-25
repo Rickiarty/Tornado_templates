@@ -8,11 +8,11 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
     #_webapi_mapping = dict() # Substitute 'dict()' for '{}' to initialize a dictionary/mapping for preventing from mixing dictionaries up with sets. 
     _webapi_mapping = {
         "isaccountvalid": Authentication.IsAccountValid, 
-        "doeslogin": Authentication.DoesLogin, 
-        "login": Authentication.Login, 
-        "logout": Authentication.Logout, 
-        "logoutall": Authentication.LogoutAll, 
-        "refreshtoken": Authentication.RefreshToken, 
+        "doeslogin":      Authentication.DoesLogin, 
+        "login":          Authentication.Login, 
+        "logout":         Authentication.Logout, 
+        "logoutall":      Authentication.LogoutAll, 
+        "refreshtoken":   Authentication.RefreshToken, 
     }
     
     # HTTP method 'GET'
@@ -30,16 +30,24 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
     def post(self):
         http_response_data = dict() # Substitute 'dict()' for '{}' to initialize a dictionary/mapping for preventing from mixing dictionaries up with sets. 
         self.set_default_headers()
-        #print(self.request.method) # DEBUG
-        #print(self.request.headers) # DEBUG
+        #print(self.request.method) # DEBUG   
+        #print(self.request.headers) # DEBUG  
         #print(self.request.remote_ip) # DEBUG
-        print(str(self.request.body)) # DEBUG
+        #print(str(self.request.body)) # DEBUG
         #print(str(self.request.body_arguments)) # DEBUG
         #req_args = { key: value for key, value in self.request.arguments.items() } # 'dictionary comprehension' in Python 
-        req_args = json.loads(str(self.request.body)[2:-1])
-        #print(json.dumps(req_args)) # DEBUG 
-        #print('id=', json.dumps(req_args['id'])) # DEBUG 
-        #print('password=', json.dumps(req_args['password'])) # DEBUG 
+        req_args = None
+        try:
+            req_args = json.loads(str(self.request.body)[2:-1])
+            #print(json.dumps(req_args)) # DEBUG 
+            #print('id=', json.dumps(req_args['id'])) # DEBUG 
+            #print('password=', json.dumps(req_args['password'])) # DEBUG 
+        except Exception as ex:
+            print(str(ex))
+        finally:
+            if req_args == None:
+                self._pageNotFound()
+                return
         url_segs = self.request.full_url().split('/')
         if url_segs[-2] != "webapi":
             self._pageNotFound()
@@ -47,6 +55,9 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         webapi_name = url_segs[-1]
         #print("\n\nwebapi_name:\n ", webapi_name, "\ntype of a specific mapped inner function/method:\n ", type(self._webapi_mapping[webapi_name]), "\nname of a specific mapped inner function/method:\n ", str(self._webapi_mapping[webapi_name]), '\n') # DEBUG 
         if webapi_name == 'login':
+            if (req_args['id'] == None) or (req_args['password'] == None):
+                self._pageNotFound()
+                return
             succeeded, token, id = self._webapi_mapping[webapi_name](id=req_args['id'], password=req_args['password']) # try to login 
             if not succeeded:
                 http_response_data['msg'] = "login failed"
@@ -60,18 +71,35 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
                 #print('token =', token) # DEBUG 
                 self.write(json.dumps(http_response_data))
                 return
-        elif webapi_name == 'logout' or webapi_name == 'logoutall' or webapi_name == 'doeslogin':
+        elif webapi_name == 'doeslogin' or webapi_name == 'logout':
+            if (req_args['id'] == None) or (req_args['token'] == None):
+                self._pageNotFound()
+                return
             result = self._webapi_mapping[webapi_name](token=req_args['token'], id=req_args['id'])
             http_response_data['result'] = str(result)
             self.write(json.dumps(http_response_data))
             return
+        elif webapi_name == 'logoutall':
+            if req_args['id'] == None:
+                self._pageNotFound()
+                return
+            result = self._webapi_mapping[webapi_name](id=req_args['id'])
+            http_response_data['result'] = str(result)
+            self.write(json.dumps(http_response_data))
+            return
         elif webapi_name == 'refreshtoken':
+            if (req_args['id'] == None) or (req_args['token'] == None):
+                self._pageNotFound()
+                return
             token, id = self._webapi_mapping[webapi_name](token=req_args['token'], id=req_args['id'])
             http_response_data["token"] = token
             http_response_data["id"] = id
             self.write(json.dumps(http_response_data))
             return
         elif webapi_name == 'isaccountvalid':
+            if (req_args['id'] == None) or (req_args['password'] == None):
+                self._pageNotFound()
+                return
             is_valid = self._webapi_mapping[webapi_name](id=req_args['id'], password=req_args['password'])
             http_response_data['isValid'] = str(is_valid)
             self.write(json.dumps(http_response_data))
