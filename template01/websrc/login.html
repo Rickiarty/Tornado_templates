@@ -27,9 +27,9 @@
 		<script src="./js/isAccountValid.js"></script>
 		<script src="./js/refreshToken.js"></script>
 		
-		<label for="fname">ID:</label><br>
+		<label >ID:</label><br>
 		<input type="text" id="textbox1" name="textbox1"><br>
-		<label for="fname">password:</label><br>
+		<label >password:</label><br>
 		<input type="password" id="textbox2" name="textbox2"><br>
 		<button onclick="loginAjaxPost('http://127.0.0.1')">login</button><br>
 		<button onclick="checkLoginStatusAjaxPost('http://127.0.0.1')">check log-in status</button><br>
@@ -37,9 +37,7 @@
 		<button onclick="logoutAllAjaxPost('http://127.0.0.1')">logout all</button><br>
 		<button onclick="refreshTokenAjaxPost('http://127.0.0.1')">refresh token</button><br>
 		<button onclick="checkAccountValidityAjaxPost('http://127.0.0.1')">check validity of account</button><br>
-		<textarea readonly id="textarea1" name="textarea1" rows="40" cols="200">
-			( empty )
-		</textarea>
+		<textarea readonly id="textarea1" name="textarea1" rows="40" cols="200">( empty )</textarea>
 		<br>
 	</div>
 </body>
