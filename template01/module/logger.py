@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 class Logger:
-    category_tuple = ('login') # implement this yourself 
+    category_tuple = ('login',) # implement this yourself 
 
     @classmethod
     def log(cls, category: str, msg: str):
