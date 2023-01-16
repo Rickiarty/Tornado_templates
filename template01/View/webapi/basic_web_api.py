@@ -59,7 +59,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
             succeeded, token, id = self._webapi_mapping[webapi_name](id=req_args['id'], password=req_args['password']) # try to login 
             if not succeeded:
                 http_response_data['msg'] = "login failed"
-                self.write(json.dumps(http_response_data).encode('utf-8'))
+                self.write(json.dumps(http_response_data).replace('\n', '\\n').encode('utf-8'))
                 return        
             else: # succeeded 
                 http_response_data["token"] = token
@@ -67,7 +67,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
                 #print('log-in =', str(Authentication.DoesLogin(token=token, id=id))) # DEBUG 
                 #print('id =', id) # DEBUG 
                 #print('token =', token) # DEBUG 
-                self.write(json.dumps(http_response_data).encode('utf-8'))
+                self.write(json.dumps(http_response_data).replace('\n', '\\n').encode('utf-8'))
                 return
         elif webapi_name == 'doeslogin' or webapi_name == 'logout':
             if (req_args['id'] == None) or (req_args['token'] == None):
@@ -75,7 +75,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
                 return
             result = self._webapi_mapping[webapi_name](token=req_args['token'], id=req_args['id'])
             http_response_data['result'] = str(result)
-            self.write(json.dumps(http_response_data).encode('utf-8'))
+            self.write(json.dumps(http_response_data).replace('\n', '\\n').encode('utf-8'))
             return
         elif webapi_name == 'logoutall':
             if req_args['id'] == None:
@@ -83,7 +83,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
                 return
             result = self._webapi_mapping[webapi_name](id=req_args['id'])
             http_response_data['result'] = str(result)
-            self.write(json.dumps(http_response_data).encode('utf-8'))
+            self.write(json.dumps(http_response_data).replace('\n', '\\n').encode('utf-8'))
             return
         elif webapi_name == 'refreshtoken':
             if (req_args['id'] == None) or (req_args['token'] == None):
@@ -92,7 +92,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
             token, id = self._webapi_mapping[webapi_name](token=req_args['token'], id=req_args['id'])
             http_response_data["token"] = token
             http_response_data["id"] = id
-            self.write(json.dumps(http_response_data).encode('utf-8'))
+            self.write(json.dumps(http_response_data).replace('\n', '\\n').encode('utf-8'))
             return
         elif webapi_name == 'isaccountvalid':
             if (req_args['id'] == None) or (req_args['password'] == None):
@@ -100,7 +100,7 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
                 return
             is_valid = self._webapi_mapping[webapi_name](id=req_args['id'], password=req_args['password'])
             http_response_data['isValid'] = str(is_valid)
-            self.write(json.dumps(http_response_data).encode('utf-8'))
+            self.write(json.dumps(http_response_data).replace('\n', '\\n').encode('utf-8'))
             return
         else:
             self.set_status(200)

@@ -27,8 +27,8 @@ function loginAjaxPost(webhost = 'http://localhost') {
             var cookies = "record=|" + jsonStr + "|;expires=" + expDate.toUTCString() + ";path=/;";
             //alert(cookies); // DEBUG 
             document.cookies = cookies;
-            document.getElementById("textarea1").innerHTML  = 'content of response from server:\n' + jsonStr + '\n';
-            document.getElementById("textarea1").innerHTML += '\ncookies in local data storage:\n' + document.cookies + '\n';
+            document.getElementById("textarea1").value  = 'content of response from server:\n' + jsonStr + '\n';
+            document.getElementById("textarea1").value += '\ncookies in local data storage:\n' + document.cookies + '\n';
         },
         error: function (thrownError) {
             console.log(thrownError);

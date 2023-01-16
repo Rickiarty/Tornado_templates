@@ -20,8 +20,8 @@ function checkLoginStatusAjaxPost(webhost = 'http://localhost') {
             var readyState = $.post(weburl, {"token": cookiesData["token"], "id": cookiesData["id"]});
             var jsonStr = JSON.stringify(responseData);
             console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
-            document.getElementById("textarea1").innerHTML  = 'content of response from server:\n' + jsonStr + '\n';
-            document.getElementById("textarea1").innerHTML += '\ncookies in local data storage:\n' + document.cookies + '\n';
+            document.getElementById("textarea1").value  = 'content of response from server:\n' + jsonStr + '\n';
+            document.getElementById("textarea1").value += '\ncookies in local data storage:\n' + document.cookies + '\n';
             alert(jsonStr);
         },
         error: function (thrownError) {

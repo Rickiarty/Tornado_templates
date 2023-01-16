@@ -22,7 +22,7 @@ function checkAccountValidityAjaxPost(webhost = 'http://localhost') {
             var readyState = $.post(weburl, {"id": webpageData["id"], "password": webpageData["password"]});
             var jsonStr = JSON.stringify(responseData);
             console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
-            document.getElementById("textarea1").innerHTML  = 'content of response from server:\n' + jsonStr + '\n';
+            document.getElementById("textarea1").value  = 'content of response from server:\n' + jsonStr + '\n';
             alert(jsonStr);
         },
         error: function (thrownError) {

@@ -15,7 +15,7 @@ function generalLogout(weburl) {
         	request.setRequestHeader("Access-Control-Allow-Origin", "*");
         },
         success: function (responseData) {
-            document.getElementById("textarea1").innerHTML  = 'cookies in local data storage - before:\n' + document.cookies + '\n';
+            document.getElementById("textarea1").value  = 'cookies in local data storage - before:\n' + document.cookies + '\n';
             var readyState = $.post(weburl, {"token": cookiesData["token"], "id": cookiesData["id"]});
             var jsonStr = JSON.stringify(responseData);
             console.log('response data:\n' + jsonStr + "\n"); //DEBUG 
@@ -23,8 +23,8 @@ function generalLogout(weburl) {
             expDate.setTime(expDate.getTime() - 730*(24*60*60*1000)); // now - 730 days in milli-second 
             var cookies = "record=|" + jsonStr + "|;expires=" + expDate.toUTCString() + ";path=/;";
             document.cookies = cookies;
-            document.getElementById("textarea1").innerHTML += '\ncontent of response from server:\n' + jsonStr + '\n';
-            document.getElementById("textarea1").innerHTML += '\ncookies in local data storage - after:\n' + document.cookies + '\n';
+            document.getElementById("textarea1").value += '\ncontent of response from server:\n' + jsonStr + '\n';
+            document.getElementById("textarea1").value += '\ncookies in local data storage - after:\n' + document.cookies + '\n';
             if ( (responseData != null) && (responseData["result"] != null) ) {
                 if (responseData['result'] == "True") { 
                     alert('logout successfully');
