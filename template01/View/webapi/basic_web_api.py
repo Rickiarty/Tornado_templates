@@ -38,10 +38,8 @@ class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
         #req_args = { key: value for key, value in self.request.arguments.items() } # 'dictionary comprehension' in Python 
         req_args = None
         try:
-            req_args = json.loads(str(self.request.body)[2:-1])
-            #print(json.dumps(req_args)) # DEBUG 
-            #print('id=', json.dumps(req_args['id'])) # DEBUG 
-            #print('password=', json.dumps(req_args['password'])) # DEBUG 
+            jsonStr = self.request.body.decode('utf-8')
+            req_args = json.loads(jsonStr)
         except Exception as ex:
             print(str(ex))
         finally:
