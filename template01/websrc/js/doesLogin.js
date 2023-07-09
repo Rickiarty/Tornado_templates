@@ -16,16 +16,22 @@ function checkLoginStatusAjaxPost(webhost = 'http://localhost') {
         beforeSend: function(request) {
         	request.setRequestHeader("Access-Control-Allow-Origin", "*");
         },
-        success: function (responseData) {
-            var readyState = $.post(weburl, {"token": cookiesData["token"], "id": cookiesData["id"]});
-            var jsonStr = JSON.stringify(responseData);
-            console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
-            document.getElementById("textarea1").value  = 'content of response from server:\n' + jsonStr + '\n';
-            document.getElementById("textarea1").value += '\ncookies in local data storage:\n' + document.cookies + '\n';
-            alert(jsonStr);
-        },
         error: function (thrownError) {
             console.log(thrownError);
+        },
+        complete: function (xhr) {
+            if(xhr.readyState == 4 && xhr.status == 200) {
+                var _ = $.post(weburl, {"token": cookiesData["token"], "id": cookiesData["id"]});
+                var jsonStr = xhr.responseText;
+                console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
+                document.getElementById("textarea1").value  = 'content of response from server:\n' + jsonStr + '\n';
+                document.getElementById("textarea1").value += '\ncookies in local data storage:\n' + document.cookies + '\n';
+                alert(jsonStr);
+            }
+            else {
+                console.log("readyState = " + xhr.readyState);
+                console.log("HTTP status code = " + xhr.status);
+            }
         }
     });
 }
