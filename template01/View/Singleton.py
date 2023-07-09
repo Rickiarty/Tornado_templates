@@ -1,6 +1,7 @@
 from datetime import datetime
 from random import randint
 from module.logger import Logger
+from frozenlist import FrozenList
 
 # a static class(靜態類別) for universal unique log-in management 
 class MonoLogin:
@@ -9,7 +10,7 @@ class MonoLogin:
     # private member(s) 
     __login_status = dict() # unique dictionary recording current log-in status of accounts 
     # protected member(s)
-    _character_list = [
+    _character_list : FrozenList = [
         "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", 
         "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", 
         "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", 

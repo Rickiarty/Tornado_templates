@@ -1,12 +1,13 @@
 import json
 import View.BaseHandler
 from module.auth import Authentication
+from frozendict import frozendict
 #from urllib.parse import parse_qs
 
 class BasicWebAPIHandler(View.BaseHandler.BaseHandler):
     
     #_webapi_mapping = dict() # Substitute 'dict()' for '{}' to initialize a dictionary/mapping for preventing from mixing dictionaries up with sets. 
-    _webapi_mapping = {
+    _webapi_mapping : frozendict = {
         "isaccountvalid": Authentication.IsAccountValid, 
         "doeslogin":      Authentication.DoesLogin, 
         "login":          Authentication.Login, 
