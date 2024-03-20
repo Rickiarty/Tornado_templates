@@ -23,7 +23,6 @@ function checkAccountValidityAjaxPost(webhost = 'http://localhost') {
         },
         complete: function (xhr) {
             if(xhr.readyState == 4 && xhr.status == 200) {
-                var _ = $.post(weburl, {"id": webpageData["id"], "password": webpageData["password"]});
                 var jsonStr = xhr.responseText;
                 console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
                 document.getElementById("textarea1").value  = 'content of response from server:\n' + jsonStr + '\n';
