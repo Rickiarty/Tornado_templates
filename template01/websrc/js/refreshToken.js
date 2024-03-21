@@ -22,7 +22,6 @@ function refreshTokenAjaxPost(webhost = 'http://localhost') {
         complete: function (xhr) {
             if(xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("textarea1").value  = 'cookies in local data storage - before:\n' + document.cookies + '\n';
-                var _ = $.post(weburl, {"token": cookiesData["token"], "id": cookiesData["id"]});
                 var jsonStr = xhr.responseText;
                 console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
                 const expDate = new Date();

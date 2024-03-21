@@ -23,7 +23,6 @@ function loginAjaxPost(webhost = 'http://localhost') {
         complete: function (xhr) {
             if(xhr.readyState == 4 && xhr.status == 200) {
                 console.log('web-URL:\n' + weburl + "\n"); // DEBUG 
-                var _ = $.post(weburl, {"id": webpageData["id"], "password": webpageData["password"]});
                 var jsonStr = xhr.responseText;
                 console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
                 const expDate = new Date();
