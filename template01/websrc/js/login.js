@@ -4,7 +4,7 @@ function loginAjaxPost(webhost = 'http://localhost') {
         id: $("#textbox1").val(),
         password: $("#textbox2").val(),
     };
-    if (webpageData['id'].replace(" ", "")=="" || webpageData['password'].replace(" ", "")=="") {
+    if (webpageData['id'].replaceAll(" ", "")=="" || webpageData['password'].replaceAll(" ", "")=="") {
         return ;
     }
     $.ajax({
