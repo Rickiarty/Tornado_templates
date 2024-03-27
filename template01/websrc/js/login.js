@@ -27,11 +27,11 @@ function loginAjaxPost(webhost = 'http://localhost') {
                 console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
                 const expDate = new Date();
                 expDate.setTime(expDate.getTime() + 15*(60*1000)); // now + 15 minutes in milli-second 
-                var cookies = "record=|" + jsonStr + "|;expires=" + expDate.toUTCString() + ";path=/;";
-                //alert(cookies); // DEBUG 
-                document.cookies = cookies;
+                var cookie = "record=|" + jsonStr + "|;expires=" + expDate.toUTCString() + ";path=/;";
+                //alert(cookie); // DEBUG 
+                document.cookie = cookie;
                 document.getElementById("textarea1").value  = 'content of response from server:\n' + jsonStr + '\n';
-                document.getElementById("textarea1").value += '\ncookies in local data storage:\n' + document.cookies + '\n';
+                document.getElementById("textarea1").value += '\ncookie in local data storage:\n' + document.cookie + '\n';
             }
             else {
                 console.log("readyState = " + xhr.readyState);
