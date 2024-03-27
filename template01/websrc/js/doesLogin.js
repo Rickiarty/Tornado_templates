@@ -16,10 +16,9 @@ function checkLoginStatusAjaxPost(webhost = 'http://localhost') {
         beforeSend: function(request) {
         	request.setRequestHeader("Access-Control-Allow-Origin", "*");
         },
-        error: function (thrownError) {
-            console.log(thrownError);
-        },
         complete: function (xhr) {
+            console.log("readyState = " + xhr.readyState);
+            console.log("HTTP status code = " + xhr.status);
             if(xhr.readyState == 4 && xhr.status == 200) {
                 var jsonStr = xhr.responseText;
                 console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
@@ -28,8 +27,6 @@ function checkLoginStatusAjaxPost(webhost = 'http://localhost') {
                 alert(jsonStr);
             }
             else {
-                console.log("readyState = " + xhr.readyState);
-                console.log("HTTP status code = " + xhr.status);
             }
         }
     });

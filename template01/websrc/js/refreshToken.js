@@ -16,24 +16,21 @@ function refreshTokenAjaxPost(webhost = 'http://localhost') {
         beforeSend: function(request) {
         	request.setRequestHeader("Access-Control-Allow-Origin", "*");
         },
-        error: function (thrownError) {
-            console.log(thrownError);
-        },
         complete: function (xhr) {
+            console.log("readyState = " + xhr.readyState);
+            console.log("HTTP status code = " + xhr.status);
             if(xhr.readyState == 4 && xhr.status == 200) {
                 document.getElementById("textarea1").value  = 'cookie in local data storage - before:\n' + document.cookie + '\n';
                 var jsonStr = xhr.responseText;
                 console.log('response data:\n' + jsonStr + "\n"); // DEBUG 
                 const expDate = new Date();
                 expDate.setTime(expDate.getTime() + 15*(60*1000)); // now + 15 minutes in milli-second 
-                var cookie = "record=|" + jsonStr + "|;expires=" + expDate.toUTCString() + ";path=/;";
+                var cookie = "record=|" + jsonStr + "|;expires=" + expDate.toUTCString() + ";path=/;SameSite=Strict";
                 document.cookie = cookie;
                 document.getElementById("textarea1").value += '\ncontent of response from server:\n' + jsonStr + '\n';
                 document.getElementById("textarea1").value += '\ncookie in local data storage - after:\n' + document.cookie + '\n';
             }
             else {
-                console.log("readyState = " + xhr.readyState);
-                console.log("HTTP status code = " + xhr.status);
             }
         }
     });
